@@ -27,23 +27,23 @@ def parse_roblox_uri(uri):
     """
     Parses a roblox-player URI into a dictionary of parameters.
     """
+
     if uri.startswith("roblox-player:"):
-        # Remove the "roblox-player:" prefix and split into key-value pairs
         param_stream = uri[len("roblox-player:"):]
+
     elif uri.startswith("roblox://"):
-        # For roblox:// URIs, we might need to adapt parsing depending on format
         param_stream = uri[len("roblox://"):]
+
     else:
         raise ValueError("Invalid Roblox URI")
     
-    # Parse key-value pairs delimited by "+"
     params = {}
     for item in param_stream.split("+"):
         if ":" in item:
             key, value = item.split(":", 1)
             params[key] = value
+            
         else:
-            # Handle standalone flags (e.g., "LaunchExp")
             params[item] = True
     return params
 
@@ -52,10 +52,8 @@ def construct_launch_command(uri=None):
     Constructs the command to launch Roblox.
     """
     if uri:
-        # If a URI is provided, pass it to RobloxPlayerBeta.exe
         cmd = [ROBLOX_PLAYER_PATH, uri]
     else:
-        # Standalone launch with --app argument
         cmd = [ROBLOX_PLAYER_PATH, "--app"]
     return cmd
 
@@ -65,21 +63,21 @@ def launch_roblox(uri=None):
     """
     cmd = construct_launch_command(uri)
     print(f"Executing: {' '.join(cmd)}")
+
     if is_admin():
         subprocess.run(cmd, check=True)
     else:
-        # Re-run the script with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
 
 def main():
     if len(sys.argv) == 1:
-        # No arguments; assume standalone launch
         print("No URI provided. Launching Roblox desktop app...")
         launch_roblox()
+
     elif len(sys.argv) == 2:
-        # Parse the provided URI
         uri = sys.argv[1]
         print(f"Received URI: {uri}")
+
         try:
             params = parse_roblox_uri(uri)
             print(f"Parsed URI Parameters: {params}")
@@ -87,6 +85,7 @@ def main():
         except ValueError as e:
             print(f"Error parsing URI: {e}")
             sys.exit(1)
+
     else:
         print("Usage: python bootstrapper.py [roblox-uri]")
         sys.exit(1)
