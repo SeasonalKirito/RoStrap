@@ -5,11 +5,11 @@ Windows Registry Editor Version 5.00
 "URL Protocol"=""
 
 [HKEY_CURRENT_USER\SOFTWARE\Classes\roblox-player\shell\open\command]
-@="schtasks /run /tn \"LaunchRoblox\" /i \"%1\""
+@="\"C:\\Users\\Seasonal\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" \"C:\\Users\\Seasonal\\Documents\\GitHub\\RoStrap\\test.py\" \"%1\""
 
 [HKEY_CURRENT_USER\SOFTWARE\Classes\roblox]
 @="URL:Roblox Universal Protocol"
 "URL Protocol"=""
 
 [HKEY_CURRENT_USER\SOFTWARE\Classes\roblox\shell\open\command]
-@="schtasks /run /tn \"LaunchRoblox\" /i \"%1\""
+@="\"C:\\Users\\Seasonal\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" \"C:\\Users\\Seasonal\\Documents\\GitHub\\RoStrap\\test.py\" \"%1\""
