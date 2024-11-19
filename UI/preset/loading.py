@@ -47,7 +47,3 @@ def start_loading_animation(title=str, message=str):
 
 def close_program():
     dpg.stop_dearpygui()
-
-threading.Thread(target=start_loading_animation, args=("RoStrap","Loading Roblox..."), daemon=True).start()
-time.sleep(1)
-close_program()

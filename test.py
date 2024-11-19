@@ -1,22 +1,15 @@
 import sys
 import subprocess
-import re
-from pathlib import Path
-import requests
-import os
 import ctypes
 from plyer import notification
+import threading
+import time
+import psutil
+from pathlib import Path
 
-def get_latest_version():
-    url = "https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer"
-    response = requests.get(url)
-    response.raise_for_status()
-    data = response.json()
-    return data["clientVersionUpload"]
+from UI.preset.loading import start_loading_animation, close_program
+from utils.uri_handler import parse_roblox_uri, construct_launch_command
 
-latest_version = get_latest_version()
-ROBLOX_PLAYER_PATH = str(Path.home() / f"AppData/Local/Roblox/Versions/{latest_version}/RobloxPlayerBeta.exe")
-ROBLOX_BOOTSTRAPPER_PATH = str(Path.home() / f"AppData/Local/Roblox/Versions/{latest_version}/RobloxPlayerLauncher.exe")
 
 def is_admin():
     try:
@@ -24,44 +17,17 @@ def is_admin():
     except:
         return False
 
-def parse_roblox_uri(uri):
-    """
-    Parses a roblox-player URI into a dictionary of parameters.
-    """
-
-    if uri.startswith("roblox-player:"):
-        param_stream = uri[len("roblox-player:"):]
-
-    elif uri.startswith("roblox://"):
-        param_stream = uri[len("roblox://"):]
-
-    else:
-        raise ValueError("Invalid Roblox URI")
-    
-    params = {}
-    for item in param_stream.split("+"):
-        if ":" in item:
-            key, value = item.split(":", 1)
-            params[key] = value
-            
-        else:
-            params[item] = True
-    return params
-
-def construct_launch_command(uri=None):
-    """
-    Constructs the command to launch Roblox.
-    """
-    if uri:
-        cmd = [ROBLOX_PLAYER_PATH, uri]
-    else:
-        cmd = [ROBLOX_PLAYER_PATH, "--app"]
-    return cmd
-
 def launch_roblox(uri=None):
-    """
-    Launches Roblox with the appropriate command.
-    """
+    threading.Thread(target=start_loading_animation, args=("RoStrap","Loading Roblox...") ,daemon=True).start()
+    def roblox_check():
+        while True:
+            if any(proc.name() == "RobloxPlayerBeta.exe" for proc in psutil.process_iter()):
+                time.sleep(0.5)
+                close_program()
+                break
+            time.sleep(1)
+    
+    threading.Thread(target=roblox_check, daemon=True).start()
     cmd = construct_launch_command(uri)
     print(f"Executing: {' '.join(cmd)}")
 
