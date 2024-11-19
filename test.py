@@ -1,6 +1,7 @@
+import ctypes
+ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
 import sys
 import subprocess
-import ctypes
 from plyer import notification
 import threading
 import time

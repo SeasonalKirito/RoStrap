@@ -2,7 +2,6 @@ import win32gui
 import win32con
 import win32api
 import dearpygui.dearpygui as dpg
-import ctypes
 import time
 import threading
 
