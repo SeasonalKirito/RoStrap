@@ -46,13 +46,13 @@ def main():
             params = parse_roblox_uri(uri)
             print(params)
             
-            notification.notify(
-                title = "RoStrap",
-                message = f"Joining server",
-                timeout = 10,
-                app_icon = icon_path,
-                app_name = "RoStrap"
-            )
+            #notification.notify(
+            #    title = "RoStrap",
+            #    message = f"Joining server",
+            #    timeout = 10,
+            #    app_icon = icon_path,
+            #    app_name = "RoStrap"
+            #)
             print(construct_launch_command(uri))
             launch_roblox(uri)
         except ValueError as e:
