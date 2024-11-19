@@ -5,6 +5,7 @@ from pathlib import Path
 import requests
 import os
 import ctypes
+from plyer import notification
 
 def get_latest_version():
     url = "https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer"
@@ -64,23 +65,28 @@ def launch_roblox(uri=None):
     cmd = construct_launch_command(uri)
     print(f"Executing: {' '.join(cmd)}")
 
-    if is_admin():
-        subprocess.run(cmd, check=True)
-    else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+    subprocess.run(cmd, check=True)
 
 def main():
+    icon_path = str(Path(__file__).parent / "assets/logo.ico")
     if len(sys.argv) == 1:
         print("No URI provided. Launching Roblox desktop app...")
         launch_roblox()
 
     elif len(sys.argv) == 2:
         uri = sys.argv[1]
-        print(f"Received URI: {uri}")
 
         try:
             params = parse_roblox_uri(uri)
-            print(f"Parsed URI Parameters: {params}")
+            print(params)
+            notification.notify(
+                title = "RoStrap",
+                message = f"Joining server",
+                timeout = 10,
+                app_icon = icon_path,
+                app_name = "RoStrap"
+            )
+            print(construct_launch_command(uri))
             launch_roblox(uri)
         except ValueError as e:
             print(f"Error parsing URI: {e}")
