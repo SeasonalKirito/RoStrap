@@ -79,6 +79,7 @@ def main():
         try:
             params = parse_roblox_uri(uri)
             print(params)
+            
             notification.notify(
                 title = "RoStrap",
                 message = f"Joining server",
