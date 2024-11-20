@@ -17,6 +17,11 @@ def is_admin():
         return ctypes.windll.shell32.IsUserAnAdmin()
     except:
         return False
+    
+if not is_admin():
+    print("Please run this script as an administrator.")
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, ' '.join(sys.argv), None, 1)
+    sys.exit(0)
 
 def launch_roblox(uri=None):
     threading.Thread(target=start_loading_animation, args=("RoStrap","Loading Roblox...") ,daemon=True).start()
