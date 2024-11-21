@@ -7,7 +7,7 @@ import os
 import dearpygui.dearpygui as dpg
 
 class NODE_MAP:
-    def init_ui(self, title=str, message=str, version=str):
+    def init_ui(title=str, nodes=list):
         dpg.create_context()
 
         user32 = ctypes.windll.user32
@@ -21,21 +21,10 @@ class NODE_MAP:
 
         with dpg.window(label="", no_title_bar=True, no_move=True, no_resize=True, no_close=True, width=window_width, height=window_height):
             with dpg.node_editor(tag="node_editor", width=window_width - 30, height=window_height - 55):
-                with dpg.node(label="Startup Time (ms)", pos=(40, 40)):
-                    with dpg.node_attribute(label="Time", attribute_type=dpg.mvNode_Attr_Static):
-                        dpg.add_text(default_value=f"{int(time.time() * 1000)} ms")
-
-                with dpg.node(label="Current Time", pos=(270, 50)):
-                    with dpg.node_attribute(label="Time", attribute_type=dpg.mvNode_Attr_Static):
-                        dpg.add_text(default_value=time.strftime("%H:%M:%S"))
-
-                with dpg.node(label="Current Roblox Version", pos=(30, 150)):
-                    with dpg.node_attribute(label="Info", attribute_type=dpg.mvNode_Attr_Static):
-                        dpg.add_text(default_value=version)
-
-                with dpg.node(label="", pos=(250, 150)):
-                    with dpg.node_attribute(label="Message", attribute_type=dpg.mvNode_Attr_Static):
-                        dpg.add_text(default_value=message)
+                for node in nodes:
+                    with dpg.node(label=node["title"], pos=node["position"]):
+                        with dpg.node_attribute(label=node["title"], attribute_type=dpg.mvNode_Attr_Static):
+                            dpg.add_text(default_value=node["description"])
 
         dpg.create_viewport(title=title, width=window_width, height=window_height, x_pos=x_pos, y_pos=y_pos, resizable=False, always_on_top=True)
 
@@ -53,12 +42,9 @@ class NODE_MAP:
         hwnd = ctypes.windll.user32.FindWindowW(None, title)
         enable_dark_mode(hwnd)
 
-        dpg.start_dearpygui()
+        
+        threading.Thread(target=dpg.start_dearpygui(), daemon=True).start()
         return dpg
 
-    def close_program(self):
+    def close_program():
         dpg.stop_dearpygui()
-
-threading.Thread(target=NODE_MAP.init_ui, args=("RoStrap", "Loading Roblox...", "version-xxxxxxxxxxxx"), daemon=True).start()
-time.sleep(5)
-NODE_MAP.close_program()
