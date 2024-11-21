@@ -1,26 +1,27 @@
 import ctypes
 from ctypes import wintypes
+import time
 
 import dearpygui.dearpygui as dpg
 
 dpg.create_context()
 
-# Set dark theme
+user32 = ctypes.windll.user32
+screen_width = user32.GetSystemMetrics(0)
+screen_height = user32.GetSystemMetrics(1)
 
-# Create a single window without a title bar, non-movable, non-resizable, and non-closable
-with dpg.window(label="", no_title_bar=True, no_move=True, no_resize=True, no_close=True, width=350, height=100):
-    dpg.add_text("This is the top window")
-    dpg.add_loading_indicator()
+# Calculate the position to center the window
+window_width = 450
+window_height = 200
+x_pos = int((screen_width - window_width) / 2)
+y_pos = int((screen_height - window_height) / 2)
 
-with dpg.window(label="", no_title_bar=True, no_move=True, no_resize=True, no_close=True, width=350, height=200, pos=(0, 100)):
-    dpg.add_text("This is the bottom window")
-    with dpg.child_window(width=330, height=150, autosize_x=True, autosize_y=True):
-        with dpg.child_window(width=330, height=150, autosize_x=True, autosize_y=True) as console_window:
-            console = dpg.add_text("", wrap=330)
+with dpg.window(label="", no_title_bar=True, no_move=True, no_resize=True, no_close=True, width=434.6, height=211):
+    dpg.add_text("Loading, please wait...", pos=(12.5, 50))
+    progress_bar = dpg.add_progress_bar(label="Loading", width=window_width - 40, height=25, pos=(12.5, 100))
 
-dpg.create_viewport(title='RoStrap', width=350, height=300)
+dpg.create_viewport(title='RoStrap', width=window_width, height=window_height, x_pos=x_pos, y_pos=y_pos, resizable=False, always_on_top=True)
 
-# Function to enable dark mode for the window
 def enable_dark_mode(hwnd):
     DWMWA_USE_IMMERSIVE_DARK_MODE = 20
     set_window_attribute = ctypes.windll.dwmapi.DwmSetWindowAttribute
@@ -32,20 +33,13 @@ def enable_dark_mode(hwnd):
 dpg.setup_dearpygui()
 dpg.show_viewport()
 
-# Get the window handle and enable dark mode
 hwnd = ctypes.windll.user32.FindWindowW(None, "RoStrap")
 enable_dark_mode(hwnd)
-
-# Function to log messages to the console
-def log_to_console(message):
-    current_text = dpg.get_value(console)
-    new_text = current_text + "\n" + message
-    dpg.set_value(console, new_text)
-    dpg.set_y_scroll(console_window, dpg.get_y_scroll_max(console_window))
-
-# Example usage of logging to the console
-log_to_console("This is a log message.")
-log_to_console("Another log message.")
-
 dpg.start_dearpygui()
 dpg.destroy_context()
+
+def update_loading_bar():
+    while True:
+        for i in range(101):
+            dpg.set_value("loading_bar", i / 100.0)
+            time.sleep(0.05)
