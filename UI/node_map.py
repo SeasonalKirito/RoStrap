@@ -20,7 +20,7 @@ class NODE_MAP:
         y_pos = int((screen_height - window_height) / 2)
 
         with dpg.window(label="", no_title_bar=True, no_move=True, no_resize=True, no_close=True, width=window_width, height=window_height):
-            with dpg.node_editor(tag="node_editor", width=window_width - 30, height=window_height - 55):
+            with dpg.node_editor(tag="node_editor", width=window_width - 31, height=window_height - 53):
                 for node in nodes:
                     with dpg.node(label=node["title"], pos=node["position"]):
                         with dpg.node_attribute(label=node["title"], attribute_type=dpg.mvNode_Attr_Static):
