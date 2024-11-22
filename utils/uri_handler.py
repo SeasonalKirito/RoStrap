@@ -1,4 +1,4 @@
-from utils.enums import PATHS
+from utils.enums import ENUMS
 
 def parse_roblox_uri(uri):
     """
@@ -27,7 +27,7 @@ def construct_launch_command(uri=None):
     Constructs the command to launch Roblox.
     """
     if uri:
-        cmd = [PATHS["ROBLOX_PLAYER_PATH"], uri]
+        cmd = [ENUMS.PATHS["ROBLOX_PLAYER_PATH"], uri]
     else:
-        cmd = [PATHS["ROBLOX_PLAYER_PATH"], "--app"]
+        cmd = [ENUMS.PATHS["ROBLOX_PLAYER_PATH"], "--app"]
     return cmd
