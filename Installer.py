@@ -39,7 +39,7 @@ python_executable = sys.executable
 WindowsRegistry.register_player(python_executable, f"\"{ENUMS.PATHS['ROSTRAP_PATH']}\\Bootstrapper.py\" \"%1\"")
 notification.notify(
     title = "RoStrap",
-    message = f"Installed Registry replated implementations {ENUMS.PATHS['ROSTRAP_PATH']}\\Bootstrapper.py",
+    message = f"Installed Registry implementations {ENUMS.PATHS['ROSTRAP_PATH']}\\Bootstrapper.py",
     timeout = 5,
     app_icon = icon_path,
     app_name = "RoStrap"
