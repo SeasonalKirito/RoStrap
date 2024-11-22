@@ -1,1 +1,1 @@
-This folder will hold all the roblox version installed (and the non need ones will be deleted with the clean param enabled)
+This folder will hold all the roblox versions installed. The un-needed ones will be deleted with the clean param enabled.
