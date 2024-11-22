@@ -38,9 +38,9 @@ def launch_roblox(uri=None):
         for addon in addons:
             addon_path = Path(ENUMS.PATHS["ADDONS_PATH"]) / addon
             if addon_path.suffix == ".exe":
-                subprocess.run(addon_path, check=True)
+                threading.Thread(target=subprocess.run, args=(addon_path,), kwargs={"check": True}, daemon=True).start()
             elif addon_path.suffix == ".py":
-                subprocess.run([sys.executable, addon_path], check=True)
+                threading.Thread(target=subprocess.run, args=([sys.executable, addon_path],), kwargs={"check": True}, daemon=True).start()
             else:
                 print(f"Skipping non-executable addon: {addon}")
         print("All addons have been executed.")
