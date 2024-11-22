@@ -3,10 +3,22 @@ import threading
 import time
 import psutil
 import sys
+import subprocess
 
 from UI.node_map import NODE_MAP
 from utils.enums import ENUMS
 from utils.uri_handler import URI
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+    
+if not is_admin():
+    print("Please run this script as an administrator.")
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, ' '.join(sys.argv), None, 1)
+    sys.exit(0)
 
 #ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
 
@@ -19,14 +31,16 @@ def launch_roblox(uri=None):
     def roblox_check():
         while True:
             if any(proc.name() == "RobloxPlayerBeta.exe" for proc in psutil.process_iter()):
-                time.sleep(0.5)
-                NODE_MAP.close_program()()
+                time.sleep(1.5)
+                NODE_MAP.close_program()
                 break
             time.sleep(1)
     
     threading.Thread(target=roblox_check, daemon=True).start()
     cmd = URI.construct_launch_command(uri)
     print(f"Executing: {' '.join(cmd)}")
+
+    subprocess.run(cmd, check=True)
 
 def main():
     if len(sys.argv) == 1:
