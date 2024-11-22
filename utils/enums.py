@@ -12,5 +12,7 @@ class ENUMS:
     PATHS = {
         "ROBLOX_PLAYER_PATH": str(Path(__file__).parent.parent / f"Roblox/{get_latest_version()}/RobloxPlayerBeta.exe"),
         "ROBLOX_PATH": str(Path(__file__).parent.parent / "Roblox"),
-        "ROSTRAP_PATH": str(Path(__file__).parent.parent)
+        "ROSTRAP_PATH": str(Path(__file__).parent.parent),
+
+        "ADDONS_PATH": str(Path(__file__).parent.parent / "addons")
     }

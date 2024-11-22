@@ -4,23 +4,14 @@ import time
 import psutil
 import sys
 import subprocess
+from pathlib import Path
 
 from UI.node_map import NODE_MAP
 from utils.enums import ENUMS
 from utils.uri_handler import URI
+from utils.addon_handler import AddonHandler
 
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
-    
-if not is_admin():
-    print("Please run this script as an administrator.")
-    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, ' '.join(sys.argv), None, 1)
-    sys.exit(0)
-
-#ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
+ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
 
 NODES = [
     {"title": "State", "description": "Starting Roblox...", "position": (140, 100)},
@@ -40,7 +31,21 @@ def launch_roblox(uri=None):
     cmd = URI.construct_launch_command(uri)
     print(f"Executing: {' '.join(cmd)}")
 
-    subprocess.run(cmd, check=True)
+    threading.Thread(target=subprocess.run, args=(cmd,), kwargs={"check": True}, daemon=True).start()
+    time.sleep(1)
+    addons = AddonHandler._get_addons()
+    if addons:
+        for addon in addons:
+            addon_path = Path(ENUMS.PATHS["ADDONS_PATH"]) / addon
+            if addon_path.suffix == ".exe":
+                subprocess.run(addon_path, check=True)
+            elif addon_path.suffix == ".py":
+                subprocess.run([sys.executable, addon_path], check=True)
+            else:
+                print(f"Skipping non-executable addon: {addon}")
+        print("All addons have been executed.")
+    else:
+        print("No addons found.")
 
 def main():
     if len(sys.argv) == 1:

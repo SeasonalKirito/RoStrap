@@ -22,7 +22,7 @@ import subprocess
 
 from UI.node_map import NODE_MAP
 from utils.enums import ENUMS
-from utils.registry_handle import WindowsRegistry
+from utils.registry_handler import WindowsRegistry
 from utils.install_handler import Installer
 
 
