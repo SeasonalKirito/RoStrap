@@ -1,7 +1,5 @@
 import ctypes
 import sys
-#ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
-
 def is_admin():
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
@@ -12,6 +10,8 @@ if not is_admin():
     print("Please run this script as an administrator.")
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, ' '.join(sys.argv), None, 1)
     sys.exit(0)
+
+ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
 
 import threading
 import time
