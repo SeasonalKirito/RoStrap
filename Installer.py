@@ -68,5 +68,5 @@ else:
         app_icon=icon_path,
         app_name="RoStrap"
     )
-time.sleep(5)
+time.sleep(2.5)
 NODE_MAP.close_program()
