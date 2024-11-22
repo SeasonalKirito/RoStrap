@@ -36,7 +36,7 @@ class Installer:
 
     @staticmethod
     def _fetch_version_package_manifest(version):
-        url = f"https://setup-cfly.rbxcdn.com//{version}-rbxPkgManifest.txt"
+        url = f"https://setup-cfly.rbxcdn.com/{version}-rbxPkgManifest.txt"
         response = requests.get(url)
         if response.status_code == 200:
             return response.text
@@ -90,6 +90,16 @@ class Installer:
                 else:
                     print(f"Failed to download {zip_file} from {url}. Status code: {response.status_code}")
 
+            # Create AppSettings.xml
+            app_settings_path = os.path.join(version_path, "AppSettings.xml")
+            with open(app_settings_path, 'w') as file:
+                file.write("""<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+    <ContentFolder>content</ContentFolder>
+    <BaseUrl>http://www.roblox.com</BaseUrl>
+</Settings>""")
+                
+            print("AppSettings.xml created successfully.")
             print(f"Roblox version {version} installed successfully.")
         else:
             print(f"Roblox version {version} already installed.")
