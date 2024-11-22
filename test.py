@@ -39,7 +39,7 @@ def launch_roblox(uri=None):
     subprocess.run(cmd, check=True)
 
 def main():
-    icon_path = str(Path(__file__).parent / "assets/logo.ico")
+    #icon_path = str(Path(__file__).parent / "assets/logo.ico")
     if len(sys.argv) == 1:
         print("No URI provided. Launching Roblox desktop app...")
         launch_roblox()

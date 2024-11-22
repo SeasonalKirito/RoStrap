@@ -1,4 +1,4 @@
-from enums import ENUMS
+from utils.enums import ENUMS
 import os
 import shutil
 import requests
@@ -104,5 +104,5 @@ class Installer:
         else:
             print(f"Roblox version {version} already installed.")
 
-print(Installer._get_packages(ENUMS.get_latest_version()))
-Installer.install(ENUMS.get_latest_version(), True)
+# print(Installer._get_packages(ENUMS.get_latest_version()))
+# Installer.install(ENUMS.get_latest_version(), True)
