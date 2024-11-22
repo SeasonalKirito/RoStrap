@@ -34,6 +34,7 @@ NODES = [
     {"title": "State", "description": "Installing...", "position": (250, 150)},
 ]
 threading.Thread(target=NODE_MAP.init_ui, args=("RoStrap", NODES), daemon=True).start()
+
 python_executable = sys.executable
 WindowsRegistry.register_player(python_executable, f"\"{ENUMS.PATHS['ROSTRAP_PATH']}\\Bootstrapper.py\" \"%1\"")
 notification.notify(
@@ -43,7 +44,9 @@ notification.notify(
     app_icon = icon_path,
     app_name = "RoStrap"
 )
+
 time.sleep(1)
+
 Installer.install(ENUMS.get_latest_version(), True)
 notification.notify(
     title = "RoStrap",
