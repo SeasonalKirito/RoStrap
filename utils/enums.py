@@ -1,6 +1,8 @@
 from pathlib import Path
 import requests
 
+from utils.config import config
+
 class ENUMS:
     def get_latest_version():
         url = "https://clientsettingscdn.roblox.com/v2/client-version/WindowsPlayer"
@@ -10,7 +12,7 @@ class ENUMS:
         return data["clientVersionUpload"]
 
     PATHS = {
-        "ROBLOX_PLAYER_PATH": str(Path(__file__).parent.parent / f"Roblox/{get_latest_version()}/RobloxPlayerBeta.exe"),
+        "ROBLOX_PLAYER_PATH": str(Path(__file__).parent.parent / f"Roblox/{config.read()["roblox_version"]}/RobloxPlayerBeta.exe"),
         "ROBLOX_PATH": str(Path(__file__).parent.parent / "Roblox"),
         "ROSTRAP_PATH": str(Path(__file__).parent.parent),
 

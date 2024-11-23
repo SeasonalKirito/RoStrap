@@ -24,6 +24,7 @@ from UI.node_map import NODE_MAP
 from utils.enums import ENUMS
 from utils.registry_handler import WindowsRegistry
 from utils.install_handler import Installer
+from utils.config import config
 
 
 icon_path = str(Path(__file__).parent / "assets/logo.ico")
@@ -48,18 +49,24 @@ notification.notify(
 
 time.sleep(1)
 
-Installer.install(ENUMS.get_latest_version(), True)
+try:
+    Installer.install(config.read()['roblox_version'], True)
+except Exception as e:
+    print(e)
+    
 notification.notify(
     title = "RoStrap",
-    message = f"Installed Roblox {ENUMS.get_latest_version()}",
+    message = f"Installed Roblox {config.read()['roblox_version']}",
     timeout = 10,
     app_icon = icon_path,
     app_name = "RoStrap"
 )
+
 time.sleep(1)
-roblox_executable = Path(ENUMS.PATHS['ROBLOX_PATH']) / ENUMS.get_latest_version() / "RobloxPlayerBeta.exe"
-if roblox_executable.exists():
-    subprocess.Popen([str(roblox_executable)])
+
+bootstrapper_path = Path(ENUMS.PATHS['ROSTRAP_PATH']) / "Bootstrapper.py"
+if bootstrapper_path.exists():
+    subprocess.Popen([python_executable, str(bootstrapper_path)])
 else:
     notification.notify(
         title="RoStrap",
@@ -68,5 +75,5 @@ else:
         app_icon=icon_path,
         app_name="RoStrap"
     )
-time.sleep(2.5)
+time.sleep(0.25)
 NODE_MAP.close_program()

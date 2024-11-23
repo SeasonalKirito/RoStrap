@@ -10,8 +10,14 @@ from UI.node_map import NODE_MAP
 from utils.enums import ENUMS
 from utils.uri_handler import URI
 from utils.addon_handler import AddonHandler
+from utils.config import config
 
-ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)
+roblox_folder = Path(ENUMS.PATHS["ROBLOX_PATH"])
+if not config.read()["roblox_version"] in [folder.name for folder in roblox_folder.iterdir() if folder.is_dir()]:
+    print("Invalid Roblox version. Please run the installer first.")
+    installer_path = Path(__file__).parent / "installer.py"
+    threading.Thread(target=subprocess.run, args=([sys.executable, installer_path],), kwargs={"check": True}, daemon=True).start()
+    sys.exit(1)
 
 NODES = [
     {"title": "State", "description": "Starting Roblox...", "position": (140, 100)},
@@ -32,7 +38,7 @@ def launch_roblox(uri=None):
     print(f"Executing: {' '.join(cmd)}")
 
     threading.Thread(target=subprocess.run, args=(cmd,), kwargs={"check": True}, daemon=True).start()
-    time.sleep(1)
+    time.sleep(2.5)
     addons = AddonHandler._get_addons()
     if addons:
         for addon in addons:
